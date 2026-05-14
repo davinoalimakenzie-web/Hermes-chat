@@ -1,0 +1,117 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hermes Chat</title>
+    
+    <!-- Link ke file Manifest PWA (Pastikan file manifest.json ada di GitHub Anda) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1E2749">
+
+    <!-- Ikon PWA -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7wn6OgPC90ZXh0Pjwvc3ZnPg==">
+
+    <!-- Converse.js CSS -->
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.conversejs.org/10.1.5/css/converse.min.css">
+
+    <style>
+        /* === TEMA BRANDING HERMES CHAT === */
+        :root {
+            --converse-primary-color: #1E2749;       /* Biru Tua */
+            --converse-secondary-color: #F4B41A;     /* Emas */
+            --converse-text-color: #333333;
+            --converse-link-color: #F4B41A;
+            
+            --converse-navbar-bg-color: #1E2749;
+            --converse-navbar-text-color: #FFFFFF;
+            --converse-controlbox-heading-bg-color: #1E2749;
+            --converse-controlbox-heading-color: #FFFFFF;
+            --converse-chat-head-bg-color: #1E2749;
+            --converse-chat-head-text-color: #FFFFFF;
+            
+            --converse-button-bg-color: #F4B41A;
+            --converse-button-text-color: #1E2749;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #f4f5f7;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow: hidden; 
+        }
+
+        #conversejs-wrapper {
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #conversejs.converse-fullscreen .chatbox .box-flyout {
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        #conversejs .btn-primary {
+            background-color: #F4B41A;
+            color: #1E2749;
+            border-color: #d19a16;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        #conversejs .btn-primary:hover {
+            background-color: #e3a617;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Area Converse.js -->
+    <div id="conversejs-wrapper"></div>
+
+    <!-- Converse.js JS -->
+    <script src="https://cdn.conversejs.org/10.1.5/dist/converse.min.js"></script>
+
+    <script>
+        // Inisialisasi Converse.js saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // URL BOSH Default untuk testing. Nanti ganti dengan URL server XMPP Anda.
+            const BOSH_URL = 'https://conversejs.org/http-bind/'; 
+            const MUC_DOMAIN = 'conference.conversejs.org';
+
+            converse.initialize({
+                bosh_service_url: BOSH_URL,
+                view_mode: 'fullscreen',       
+                root: document.getElementById('conversejs-wrapper'),
+                show_controlbox_by_default: true,
+                roster_groups: true,           
+                allow_registration: false,     
+                play_sounds: true,
+                muc_domain: MUC_DOMAIN,
+                whitelisted_plugins: [],
+                i18n: 'id'                     
+            }).then(() => {
+                console.log("Hermes Chat berhasil dimuat.");
+            }).catch(e => {
+                console.error("Gagal memuat Converse.js:", e);
+            });
+        });
+
+        // Registrasi Service Worker PWA (Dijalankan tanpa error meskipun sw.js belum ada)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => console.log('PWA: Service Worker terdaftar!'))
+                    .catch((err) => console.log('PWA: Service Worker tidak ditemukan atau gagal terdaftar (Abaikan jika Anda belum membuat file sw.js)'));
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+```
